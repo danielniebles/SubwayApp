@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">SubwayApp</string>
+    <string name="miPerfil">Mi perfil</string>
+    <string name="principal">Principal</string>
+    <string name="user">Usuario</string>
+    <string name="email">E-mail</string>
+    <string name="password">Contraseña</string>
+    <string name="repeat">Repetir contraseña</string>
+    <string name="sex">Ingrese el sexo:</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="date">Ingrese la fecha de nacimiento:</string>
+    <string name="register"><u>Registrarse</u></string>
+    <string name="my_text">This is an <u>underline</u>.</string>
+
 </resources>
