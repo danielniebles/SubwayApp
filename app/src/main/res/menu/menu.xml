@@ -7,4 +7,12 @@
         android:id="@+id/mPrincipal"
         android:title="@string/principal"/>
 
+    <item
+        android:id="@+id/mLigeros"
+        android:title="@string/lig"/>
+
+    <item
+        android:id="@+id/mSanduches"
+        android:title="@string/sanduches"/>
+
 </menu>

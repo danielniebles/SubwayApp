@@ -29,12 +29,15 @@
         android:textSize="20sp"
         android:id="@+id/eUserL"
         android:gravity="center"
+        android:inputType="text"
+        android:textColorHint="@color/white"
         android:textColor="@color/white"/>
 
     <EditText
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
         android:hint="@string/password"
         android:textSize="20sp"
         android:id="@+id/ePassL"

@@ -18,11 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogginActivity"></activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".LogginActivity" />
+        <activity android:name=".PublicidadActivity"></activity>
         <activity android:name=".MiPerfilActivity" />
         <activity android:name=".RegistroActivity" />
-
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Publicidad2Activity"></activity>
     </application>
 
 </manifest>
