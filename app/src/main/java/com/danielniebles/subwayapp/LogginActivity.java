@@ -1,6 +1,9 @@
 package com.danielniebles.subwayapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,11 +21,16 @@ public class LogginActivity extends AppCompatActivity {
     TextView tRegister;
     String user, pass;
     String userextra, passextra, sexextra, datextra, mailextra;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = prefs.edit();
 
         eUser = (EditText)findViewById(R.id.eUserL);
         ePass = (EditText)findViewById(R.id.ePassL);
@@ -39,17 +47,20 @@ public class LogginActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)){
                     Toast.makeText(getApplicationContext(), "Hay campos vacíos",
                             Toast.LENGTH_SHORT).show();
-                }else if(!user.equals(userextra) || !pass.equals(passextra)){
+                }else if(!user.equals(prefs.getString("User", "")) || !pass.equals(prefs.getString("Password", ""))){
                     Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos",
                             Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putExtra("Name",user);
+                    /*intent.putExtra("Name",user);
                     intent.putExtra("Pass",pass);
                     intent.putExtra("Mail",mailextra);
                     intent.putExtra("Date",datextra);
-                    intent.putExtra("Sex",sexextra);
+                    intent.putExtra("Sex",sexextra);*/
+                    editor.putInt("Logged", 1);
+                    editor.commit();
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -64,6 +75,7 @@ public class LogginActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -75,6 +87,14 @@ public class LogginActivity extends AppCompatActivity {
             sexextra = data.getStringExtra("Sex");
             datextra = data.getStringExtra("Date");
             mailextra = data.getStringExtra("Mail");
+
+            editor.putString("User", userextra);
+            editor.putString("Password", passextra);
+            editor.putString("Sex", sexextra);
+            editor.putString("Date", datextra);
+            editor.putString("Email", mailextra);
+            editor.commit();
+
 
         }else{
             Log.d("mensaje","No se cargaron los datos");

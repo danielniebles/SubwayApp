@@ -3,6 +3,8 @@ package com.danielniebles.subwayapp;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,12 +27,17 @@ public class RegistroActivity extends AppCompatActivity {
     StringBuilder fecha;
     String usuario, email, pass, rpass, sexo;
     RadioGroup rdgGroup;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = prefs.edit();
 
         eUser = (EditText)findViewById(R.id.eUser);
         eMail = (EditText)findViewById(R.id.eMail);
@@ -40,6 +47,8 @@ public class RegistroActivity extends AppCompatActivity {
         bCancel = (Button)findViewById(R.id.bCancel);
         calendar = Calendar.getInstance();
         rdgGroup = (RadioGroup)findViewById(R.id.rdgGroup1);
+
+
 
         //Obtener de fecha
         año = calendar.get(Calendar.YEAR);

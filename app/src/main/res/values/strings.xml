@@ -2,6 +2,7 @@
     <string name="app_name">SubwayApp</string>
     <string name="miPerfil">Mi perfil</string>
     <string name="principal">Principal</string>
+    <string name="promo">Promociones</string>
     <string name="lig">Los ligeros</string>
     <string name="sanduches">Sánduches</string>
     <string name="user">Usuario</string>
@@ -14,9 +15,13 @@
     <string name="aceptar">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="ingresar">Ingresar</string>
+    <string name="sesion">Cerrar sesión</string>
     <string name="date">Ingrese la fecha de nacimiento:</string>
     <string name="register"><u>Registrarse</u></string>
+    <string name="config">Configuración</string>
 
+    <string name="abierto">Open navigation drawer</string>
+    <string name="cerrado">Close navigation drawer</string>
 
     <!-- Sub Ligeros-->
     <!-- TODO: Remove or change this placeholder text -->

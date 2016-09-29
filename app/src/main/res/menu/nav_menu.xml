@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_promociones"
+            android:checked="true"
+            android:icon="@drawable/ic_grade_black_24dp"
+            android:title="@string/promo" />
+        <item
+            android:id="@+id/nav_ligeros"
+            android:icon="@drawable/ic_restaurant_black_24dp"
+            android:title="@string/lig" />
+        <item
+            android:id="@+id/nav_sanduches"
+            android:icon="@drawable/ic_room_service_black_24dp"
+            android:title="@string/sanduches" />
+
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/miPerfil" />
+
+        <item
+            android:id="@+id/nav_cerrar"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="@string/sesion" />
+    </group>
+
+</menu>

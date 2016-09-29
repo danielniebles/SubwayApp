@@ -50,10 +50,11 @@
         android:gravity="center">
 
         <Button
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ingresar"
-            android:background="@drawable/custom_button_selector"
+            android:theme="@style/MyButtonTheme"
             android:id="@+id/bEnter"/>
 
     </LinearLayout>

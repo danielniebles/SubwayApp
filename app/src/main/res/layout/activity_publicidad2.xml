@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/subway"
-    android:id="@+id/pager"
-    tools:context="com.danielniebles.subwayapp.Publicidad2Activity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PublicidadActivity"
+    android:background="@color/subway">
 
-</android.support.v4.view.ViewPager>
+    <android.support.design.widget.TabLayout
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:id="@+id/tab_layout2"
+        android:backgroundTint="@color/forestgreen"
+        app:tabTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        />
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/tab_layout2"
+        android:id="@+id/pager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        />
+
+</RelativeLayout>
