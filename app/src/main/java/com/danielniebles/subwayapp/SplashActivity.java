@@ -38,6 +38,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if(Logged == 1){
                     Intent i = new Intent().setClass(SplashActivity.this, MainActivity.class);
+                    editor.putInt("Actual", 0);
+                    editor.commit();
                     startActivity(i);
                     finish();
                 }else{

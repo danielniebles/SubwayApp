@@ -2,8 +2,11 @@ package com.danielniebles.subwayapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,12 +32,18 @@ public class RegistroActivity extends AppCompatActivity {
     RadioGroup rdgGroup;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    SQLiteDatabase dbUsuarios;
+    ContentValues dataBD;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+
+        SQLiteHelper db = new SQLiteHelper(this, "Database", null, 1);
+
+        dbUsuarios = db.getWritableDatabase();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
@@ -49,7 +58,6 @@ public class RegistroActivity extends AppCompatActivity {
         rdgGroup = (RadioGroup)findViewById(R.id.rdgGroup1);
 
 
-
         //Obtener de fecha
         año = calendar.get(Calendar.YEAR);
         mes = calendar.get(Calendar.MONTH);
@@ -62,6 +70,7 @@ public class RegistroActivity extends AppCompatActivity {
                 email = eMail.getText().toString();
                 pass = ePass.getText().toString();
                 rpass = eRepeat.getText().toString();
+                Cursor c = dbUsuarios.rawQuery("select * from Usuarios where usuario = '"+usuario+"' ", null);
 
                 if(TextUtils.isEmpty(usuario)||TextUtils.isEmpty(email)||TextUtils.isEmpty(pass)||
                         TextUtils.isEmpty(rpass)){
@@ -76,7 +85,9 @@ public class RegistroActivity extends AppCompatActivity {
                 }else if(TextUtils.isEmpty(fecha)) {
                     Toast.makeText(getApplicationContext(), "Seleccione la Fecha",
                             Toast.LENGTH_SHORT).show();
-
+                }else if(c.getCount() > 0){
+                    Toast.makeText(getApplicationContext(), "El usuario ya esta registrado",
+                            Toast.LENGTH_SHORT).show();
                 }else{
                     int a = rdgGroup.getCheckedRadioButtonId();
                     switch (a){
@@ -88,6 +99,14 @@ public class RegistroActivity extends AppCompatActivity {
                             break;
                     }
                     Intent intent = new Intent();
+                    c.close();
+
+                    //Gestión de base de datos
+                    dbUsuarios.execSQL("INSERT INTO Usuarios VALUES(null, '"+usuario+"', '"+pass+"','"+email+"', " +
+                            "'"+sexo+"', '"+fecha.toString()+"')");
+                    dbUsuarios.close();
+
+                    //Enviar ActivityforResult al Loggin
                     intent.putExtra("Name",usuario);
                     intent.putExtra("Pass",pass);
                     intent.putExtra("Mail",email);

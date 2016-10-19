@@ -3,6 +3,8 @@ package com.danielniebles.subwayapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,20 +25,17 @@ public class MainActivity extends NavExActivity {
 
 
     String user, mail, sex, date;
-    private Promociones[] promociones1 =
-            new Promociones[]{
-                    new Promociones(R.drawable.publicidad2,"Los Ligeros","Sánduches con 6 gramos de grasa, o menos.", "$7000"),
-                    new Promociones(R.drawable.publicidad3,"Diarios","Todos los días un sub diferente!","Desde $7000"),
-                    new Promociones(R.drawable.promocion3,"Nueva adición", "Prueba YA la nueva adición de guacamole!", "$2000"),
-                    new Promociones(R.drawable.promocion2, "Nuevo Baratísimo", "Sub de pollo apanado", "$4700"),
-                    new Promociones(R.drawable.promocion5, "Nuevos combos!", "Sorteos semanales", "Desde $4000")
-            };
-
+    private Promociones[] promociones1 = new Promociones[5];
 
     ListView list;
     FrameLayout contentFrameLayout;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    int idImagen;
+    String nombre, descripcion, precio;
+    SQLiteDatabase dbUsuarios;
+    int i = 0;
+    int j = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +45,26 @@ public class MainActivity extends NavExActivity {
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.contenedorFrame); //Remember this is the FrameLayout area within your activity_main.xml
         getLayoutInflater().inflate(R.layout.activity_main, contentFrameLayout);
 
+        SQLiteHelper db = new SQLiteHelper(this, "Database", null, 1);
+        dbUsuarios = db.getWritableDatabase();
+
+        for (i = 0; i<5; i++) {
+            Cursor c = dbUsuarios.rawQuery("select * from Productos where idProducto='" + j + "'", null);
+            if (c.moveToFirst()) {
+                nombre = c.getString(c.getColumnIndex("nombre"));
+                descripcion = c.getString(c.getColumnIndex("descripcion"));
+                precio = c.getString(c.getColumnIndex("precio"));
+                idImagen = c.getInt(c.getColumnIndex("imagen"));
+                c.close();
+            }
+            promociones1[i] = new Promociones(idImagen, nombre, descripcion, precio);
+            j++;
+        }
+        j = 0;
+        dbUsuarios.close();
+
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
-
-        /*Bundle extras = getIntent().getExtras();
-        user = extras.getString("Name");
-        mail = extras.getString("Mail");
-        sex = extras.getString("Sex");
-        date = extras.getString("Date");*/
 
         Adapter adaptador = new Adapter(this, promociones1);
         list = (ListView) findViewById(R.id.list);

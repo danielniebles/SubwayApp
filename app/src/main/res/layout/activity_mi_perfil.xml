@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.danielniebles.subwayapp.MiPerfilActivity"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MiPerfilActivity">
 
-    <TextView
+    <android.support.design.widget.TabLayout
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:id="@+id/tab_layout2"
+        android:backgroundTint="@color/forestgreen"
+        app:tabTextColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/miPerfil"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:id="@+id/tName"/>
-
-    <ImageView
-        android:layout_marginTop="10dp"
-        android:id="@+id/iUser"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_gravity="center"/>
-
-    <TextView
+        android:layout_height="48dp"
+        />
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/tab_layout2"
+        android:id="@+id/pager2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/tPerfil"/>
+        android:layout_height="match_parent"
+        />
 
-</LinearLayout>
+</RelativeLayout>

@@ -33,8 +33,6 @@ public class PublicidadActivity extends NavExActivity {
         sex = extras.getString("Sex");
         date = extras.getString("Date");*/
 
-
-
         PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager)findViewById(R.id.pager);
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);

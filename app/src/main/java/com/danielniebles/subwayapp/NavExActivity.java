@@ -3,6 +3,8 @@ package com.danielniebles.subwayapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -40,6 +42,7 @@ public class NavExActivity extends AppCompatActivity {
     String user, mail, sex, date;
     TextView tNombren, tMailn;
     ImageView imagend;
+    SQLiteDatabase dbUsuarios;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -53,17 +56,19 @@ public class NavExActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
-
-        /*Bundle extras = getIntent().getExtras();
-        user = extras.getString("Name");
-        mail = extras.getString("Mail");
-        sex = extras.getString("Sex");
-        date = extras.getString("Date");*/
-
         user = prefs.getString("User","");
-        mail = prefs.getString("Email","");
-        sex = prefs.getString("Sex", "Femenino");
-        date = prefs.getString("Date","");
+
+        SQLiteHelper db = new SQLiteHelper(this, "Database", null, 1);
+        dbUsuarios = db.getWritableDatabase();
+
+        //Obtener datos de DB
+        Cursor c = dbUsuarios.rawQuery("select * from Usuarios where usuario='"+user+"'",null );
+
+        if (c.moveToFirst()){
+            mail = c.getString(c.getColumnIndex("email"));
+            sex = c.getString(c.getColumnIndex("sexo"));
+            c.close();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,8 +96,6 @@ public class NavExActivity extends AppCompatActivity {
             imagend.setImageResource(R.drawable.usuario);
         }
 
-        int sub = prefs.getInt("Submenu", 0);
-
         navigationView.getMenu().getItem(prefs.getInt("Actual",0)).setChecked(true);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -102,10 +105,6 @@ public class NavExActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_promociones:
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        /*intent.putExtra("Name", user);
-                        intent.putExtra("Mail", mail);
-                        intent.putExtra("Sex", sex);
-                        intent.putExtra("Date", date);*/
                         editor.putInt("Actual", 0);
                         editor.commit();
                         startActivity(intent);
@@ -114,10 +113,6 @@ public class NavExActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_ligeros:
                         Intent intent2 = new Intent(getApplicationContext(), PublicidadActivity.class);
-                        /*intent2.putExtra("Name", user);
-                        intent2.putExtra("Mail", mail);
-                        intent2.putExtra("Sex", sex);
-                        intent2.putExtra("Date", date);*/
                         editor.putInt("Actual", 1);
                         editor.commit();
                         startActivity(intent2);
@@ -126,10 +121,6 @@ public class NavExActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_perfil:
                         Intent intent3 = new Intent(getApplicationContext(), MiPerfilActivity.class);
-                        /*intent3.putExtra("Name", user);
-                        intent3.putExtra("Mail", mail);
-                        intent3.putExtra("Sex", sex);
-                        intent3.putExtra("Date", date);*/
                         editor.putInt("Actual", 3);
                         editor.commit();
                         startActivity(intent3);
@@ -138,10 +129,6 @@ public class NavExActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_sanduches:
                         Intent intent4 = new Intent(getApplicationContext(), Publicidad2Activity.class);
-                        /*intent4.putExtra("Name", user);
-                        intent4.putExtra("Mail", mail);
-                        intent4.putExtra("Sex", sex);
-                        intent4.putExtra("Date", date);*/
                         editor.putInt("Actual", 2);
                         editor.commit();
                         startActivity(intent4);
@@ -150,10 +137,6 @@ public class NavExActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_cerrar:
                         Intent intent5 = new Intent(getApplicationContext(), LogginActivity.class);
-                        /*intent5.putExtra("Name", user);
-                        intent5.putExtra("Mail", mail);
-                        intent5.putExtra("Sex", sex);
-                        intent5.putExtra("Date", date);*/
                         editor.putInt("Actual", 0);
                         editor.putInt("Logged", 0);
                         editor.commit();

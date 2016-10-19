@@ -1,7 +1,12 @@
 package com.danielniebles.subwayapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,9 +17,9 @@ import android.widget.TextView;
 
 public class MiPerfilActivity extends NavExActivity {
 
-    TextView tPerfil;
-    ImageView iUser;
-    String usuario, mail, sexo, fecha;
+    private ViewPager mViewPager;
+    FrameLayout contentFrameLayout;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,32 +29,49 @@ public class MiPerfilActivity extends NavExActivity {
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.contenedorFrame); //Remember this is the FrameLayout area within your activity_main.xml
         getLayoutInflater().inflate(R.layout.activity_mi_perfil, contentFrameLayout);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = prefs.edit();
+        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager)findViewById(R.id.pager2);
+        tabLayout = (TabLayout)findViewById(R.id.tab_layout2);
 
-        tPerfil = (TextView)findViewById(R.id.tPerfil);
-        iUser = (ImageView)findViewById(R.id.iUser);
+        mViewPager.setAdapter(pageAdapter);
 
-        /*Bundle extras = getIntent().getExtras();
-        usuario = extras.getString("Name");
-        mail = extras.getString("Mail");
-        fecha = extras.getString("Date");
-        sexo = extras.getString("Sex");*/
+        tabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        usuario = prefs.getString("User","");
-        mail = prefs.getString("Email","");
-        sexo = prefs.getString("Sex", "Femenino");
-        fecha = prefs.getString("Date","");
-
-        if(sexo.equals("Femenino")){
-            iUser.setBackgroundResource(R.drawable.usuario2);
-        }else{
-            iUser.setBackgroundResource(R.drawable.usuario);
-        }
-
-        tPerfil.setText(new StringBuilder().append("Usuario: ").append(usuario).append("\n").append("Email: ")
-        .append(mail).append("\n").append("Sexo: ").append(sexo).append("\n").append("Fecha de nacimiento: ")
-        .append(fecha));
+        tabLayout.setTabsFromPagerAdapter(pageAdapter);
     }
 
+    public class PageAdapter extends FragmentPagerAdapter{
+        public PageAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0: return new MiperfilFragment();
+                case 1: return new FavoritosFragment();
+                default: return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title=" ";
+            switch (position){
+                case 0:
+                    title="Mi perfil";
+                    break;
+                case 1:
+                    title="Favoritos";
+                    break;
+            }
+            return title;
+        }
+    }
 }
