@@ -70,6 +70,8 @@ public class NavExActivity extends AppCompatActivity {
             c.close();
         }
 
+        dbUsuarios.close();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();

@@ -90,6 +90,8 @@ public class FavoritosFragment extends Fragment {
             promociones1.add(promociones2);
         }
 
+        dbUsuarios.close();
+
         Adapter adaptador = new Adapter(getActivity(), promociones1);
         list2 = (ListView) view.findViewById(R.id.list2);
         list2.setAdapter(adaptador);

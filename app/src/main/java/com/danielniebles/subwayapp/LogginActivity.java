@@ -64,7 +64,6 @@ public class LogginActivity extends AppCompatActivity {
                     c.close();
                 }
 
-                dbUsuarios.close();
 
                 //Validación de datos
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)){

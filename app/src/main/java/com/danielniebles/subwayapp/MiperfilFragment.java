@@ -62,6 +62,8 @@ public class MiperfilFragment extends Fragment {
             c.close();
         }
 
+        dbUsuarios.close();
+
         iUser = (ImageView)view.findViewById(R.id.iUser);
         tPerfil = (TextView)view.findViewById(R.id.tPerfil);
 
