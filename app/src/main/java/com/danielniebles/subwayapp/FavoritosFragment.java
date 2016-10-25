@@ -7,15 +7,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,8 +33,10 @@ public class FavoritosFragment extends Fragment {
     SQLiteDatabase dbUsuarios;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    FloatingActionButton floatingActionButton;
+    Adapter adaptador = null;
     String usuario;
-    int idUsuario;
+    int idUsuario, clicked;
     Cursor c1, c2, c3, c4;
     int j = 1;
     String nombre, descripcion, precio;
@@ -52,6 +57,7 @@ public class FavoritosFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_favoritos, container, false);
+        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.fab2);
 
         SQLiteHelper db = new SQLiteHelper(getActivity(), "Database", null, 1);
         dbUsuarios = db.getWritableDatabase();
@@ -66,15 +72,13 @@ public class FavoritosFragment extends Fragment {
             c1.close();
         }
 
-        for(int j = 1; j <= 10; j++){
-            c4 = dbUsuarios.rawQuery("select * from MisFavoritos where idFavorito='"+ j +"'",null);
-            if (c4.moveToFirst()) {
-                aux = c4.getInt(c4.getColumnIndex("idUsuario"));
-                if (aux == idUsuario) {
-                    productos.add(c4.getInt(c4.getColumnIndex("idProducto")));
-                }
-                c4.close();
+        c4 = dbUsuarios.rawQuery("select * from MisFavoritos",null);
+        while (c4.moveToNext()) {
+            aux = c4.getInt(c4.getColumnIndex("idUsuario"));
+            if (aux == idUsuario) {
+                productos.add(c4.getInt(c4.getColumnIndex("idProducto")));
             }
+            //c4.close();
         }
 
         for(int k = 0; k < productos.size(); k++){
@@ -90,17 +94,45 @@ public class FavoritosFragment extends Fragment {
             promociones1.add(promociones2);
         }
 
-        dbUsuarios.close();
-
-        Adapter adaptador = new Adapter(getActivity(), promociones1);
+        adaptador = new Adapter(getActivity(), promociones1);
         list2 = (ListView) view.findViewById(R.id.list2);
+
+
+        list2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clicked = position;
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pos = "";
+                if(promociones1.size()==0){
+                    Toast.makeText(getActivity(), "No tiene favoritos",
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    String nombreaux = (promociones1.get(clicked)).getNombre();
+                    promociones1.remove(clicked);
+                    c2 = dbUsuarios.rawQuery("SELECT * FROM Productos WHERE nombre = '" + nombreaux + "'", null);
+                    if (c2.moveToFirst()) {
+                        pos = c2.getString(c2.getColumnIndex("idProducto"));
+                    }
+                    dbUsuarios.execSQL("DELETE FROM MisFavoritos WHERE idProducto = '" + pos + "' AND idUsuario = '" + idUsuario + "'");
+                    list2.invalidateViews();
+                }
+            }
+        });
+
         list2.setAdapter(adaptador);
+        //dbUsuarios.close();
 
         return view;
     }
 
     class Adapter extends ArrayAdapter<Promociones>{
-        public Adapter(Context context, ArrayList<Promociones> objects) {
+        public Adapter(Context context, ArrayList objects) {
             super(context, R.layout.layout_item, objects);
         }
 
